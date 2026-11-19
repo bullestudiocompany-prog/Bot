@@ -1,15 +1,11 @@
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
 const pino = require('pino');
-const readline = require('readline');
 
 // CONFIGURATION DU PRÉFIXE
 const PREFIX = "😑"; 
 
 // Importation des commandes externes
 const menuCommand = require('./commands/menu');
-
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState('auth_info');
@@ -20,13 +16,6 @@ async function startBot() {
     auth: state,
     browser: ["Ubuntu", "Chrome", "20.0.04"]
   });
-
-  if (!sock.authState.creds.registered) {
-    const phoneNumber = await question("Entrez le numéro WhatsApp du bot (indicatif pays, sans +, ex: 242061234567) : ");
-    const code = await sock.requestPairingCode(phoneNumber.trim());
-    console.log(`\n🔑 VOTRE CODE DE JUMELAGE : ${code}\n`);
-    console.log("Allez dans WhatsApp > Paramètres > Appareils connectés > Connecter un appareil > Connecter avec le numéro de téléphone.");
-  }
 
   sock.ev.on('creds.update', saveCreds);
 
@@ -69,7 +58,7 @@ async function startBot() {
 
     // Commande info
     else if (command === 'info') {
-      await sock.sendMessage(from, { text: "🤖 Bot structuré proprement avec un code organisé." }, { quoted: msg });
+      await sock.sendMessage(from, { text: "🤖 Bot structuré proprement et hébergé sur Render." }, { quoted: msg });
     }
   });
 }
