@@ -1,11 +1,12 @@
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
 const pino = require('pino');
 
-// CONFIGURATION DU PRÉFIXE
-const PREFIX = "😑"; 
+// CONFIGURATION DU PRÉFIXE EN EMOJI BULLE
+const PREFIX = "🫧"; 
 
-// Importation des commandes externes
+// Importation des fichiers de commandes
 const menuCommand = require('./commands/menu');
+const studioCommand = require('./commands/studio');
 
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState('auth_info');
@@ -26,7 +27,7 @@ async function startBot() {
       console.log('Connexion fermée. Reconnexion :', shouldReconnect);
       if (shouldReconnect) startBot();
     } else if (connection === 'open') {
-      console.log('✅ Bot WhatsApp connecté avec le préfixe 😑 !');
+      console.log('✅ Bot WhatsApp connecté avec le préfixe 🫧 !');
     }
   });
 
@@ -38,7 +39,7 @@ async function startBot() {
     const from = msg.key.remoteJid;
     const text = msg.message.conversation || msg.message.extendedTextMessage?.text || "";
 
-    // Vérifier si le message commence par le préfixe 😑
+    // Vérifier si le message commence par le préfixe 🫧
     if (!text.startsWith(PREFIX)) return;
 
     const args = text.slice(PREFIX.length).trim().split(/ +/);
@@ -46,19 +47,19 @@ async function startBot() {
 
     console.log(`[COMMANDE] : ${command}`);
 
-    // Commande menu / aide
+    // Commande menu
     if (command === 'menu' || command === 'aide') {
       await menuCommand(sock, msg, from, PREFIX);
     }
     
-    // Commande ping
-    else if (command === 'ping') {
-      await sock.sendMessage(from, { text: "🏓 Pong avec le sourire 😑 !" }, { quoted: msg });
+    // Commande studio / bio
+    else if (command === 'studio' || command === 'bio' || command === 'bscompany') {
+      await studioCommand(sock, msg, from, PREFIX);
     }
 
-    // Commande info
-    else if (command === 'info') {
-      await sock.sendMessage(from, { text: "🤖 Bot structuré proprement et hébergé sur Render." }, { quoted: msg });
+    // Commande ping
+    else if (command === 'ping') {
+      await sock.sendMessage(from, { text: "🏓 Pong ! La bulle répond instantanément 🫧." }, { quoted: msg });
     }
   });
 }

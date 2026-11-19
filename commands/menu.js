@@ -1,16 +1,17 @@
+// commands/menu.js
 module.exports = async (sock, msg, from, prefix) => {
   const menuText = `
-╭━━━ 🤖 *MENU DU BOT* 🤖 ━━━╮
+╭━━━ 🫧 *MENU BSCOMPANY* 🫧 ━━━╮
 ┃
-┃ 👋 Salut ! Voici la liste de
-┃ mes commandes disponibles :
+┃ 👋 Bienvenue dans la bulle ! 
+┃ Voici mes commandes :
 ┃
+┃ 📌 *${prefix}studio* - Présentation du studio
 ┃ 📌 *${prefix}ping* - Teste la rapidité du bot
-┃ 📌 *${prefix}menu* - Affiche ce menu d'aide
-┃ 📌 *${prefix}info* - Affiche les infos du bot
+┃ 📌 *${prefix}menu* - Affiche ce menu
 ┃
 ╰━━━━━━━━━━━━━━━━━━━━━━━━━━╯
-*Préfixe actuel : ${prefix}*
+*Studio Créatif Africain 🚀*
   `.trim();
 
   await sock.sendMessage(from, { text: menuText }, { quoted: msg });
