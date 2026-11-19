@@ -1,0 +1,18 @@
+module.exports = async (sock, msg, from, prefix) => {
+  const menuText = `
+╭━━━ 🤖 *MENU DU BOT* 🤖 ━━━╮
+┃
+┃ 👋 Salut ! Voici la liste de
+┃ mes commandes disponibles :
+┃
+┃ 📌 *${prefix}ping* - Teste la rapidité du bot
+┃ 📌 *${prefix}menu* - Affiche ce menu d'aide
+┃ 📌 *${prefix}info* - Affiche les infos du bot
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━╯
+*Préfixe actuel : ${prefix}*
+  `.trim();
+
+  await sock.sendMessage(from, { text: menuText }, { quoted: msg });
+};
+
