@@ -34,7 +34,7 @@ Studio créatif africain, BSCompany réunit auteurs et créateurs pour raconter 
   try {
     // Envoi de l'image locale Logo.jpg (assure-toi qu'elle est à la racine ou dans ton dossier)
     await sock.sendMessage(from, { 
-      image: fs.readFileSync('./Logo.jpg'), 
+      image: fs.readFileSync('./media/Logo.jpg'), 
       caption: studioCaption 
     }, { quoted: msg });
   } catch (error) {
