@@ -2,6 +2,12 @@ const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = requi
 const pino = require('pino');
 const readline = require('readline');
 
+// CONFIGURATION DU PRÉFIXE
+const PREFIX = "😑"; 
+
+// Importation des commandes externes
+const menuCommand = require('./commands/menu');
+
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
@@ -31,11 +37,11 @@ async function startBot() {
       console.log('Connexion fermée. Reconnexion :', shouldReconnect);
       if (shouldReconnect) startBot();
     } else if (connection === 'open') {
-      console.log('✅ Bot WhatsApp connecté et en ligne !');
+      console.log('✅ Bot WhatsApp connecté avec le préfixe 😑 !');
     }
   });
 
-  // Écoute des messages
+  // ÉCOUTE DES MESSAGES
   sock.ev.on('messages.upsert', async ({ messages }) => {
     const msg = messages[0];
     if (!msg.message) return;
@@ -43,11 +49,27 @@ async function startBot() {
     const from = msg.key.remoteJid;
     const text = msg.message.conversation || msg.message.extendedTextMessage?.text || "";
 
-    console.log(`[MESSAGE REÇU] : "${text}"`); // Permet de voir dans Termux si le bot capte ton message
+    // Vérifier si le message commence par le préfixe 😑
+    if (!text.startsWith(PREFIX)) return;
 
-    if (text.toLowerCase() === '!ping') {
-      await sock.sendMessage(from, { text: "Pong ! 🏓 Ça fonctionne !" }, { quoted: msg });
-      console.log(`[SUCCÈS] Réponse envoyée à !ping`);
+    const args = text.slice(PREFIX.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
+
+    console.log(`[COMMANDE] : ${command}`);
+
+    // Commande menu / aide
+    if (command === 'menu' || command === 'aide') {
+      await menuCommand(sock, msg, from, PREFIX);
+    }
+    
+    // Commande ping
+    else if (command === 'ping') {
+      await sock.sendMessage(from, { text: "🏓 Pong avec le sourire 😑 !" }, { quoted: msg });
+    }
+
+    // Commande info
+    else if (command === 'info') {
+      await sock.sendMessage(from, { text: "🤖 Bot structuré proprement avec un code organisé." }, { quoted: msg });
     }
   });
 }
