@@ -44,10 +44,7 @@ async function startBot() {
     }
   });
 
-  // Commande hidtag
-  else if (command === 'hidetag' || command === 'tag') {
-      await hidetagCommand(sock, msg, from, PREFIX, args);
-    }
+  
 
   
   // ÉCOUTE DES MESSAGES
@@ -80,6 +77,11 @@ async function startBot() {
     else if (command === 'ping') {
       await sock.sendMessage(from, { text: "🏓 Pong ! La bulle répond instantanément 🫧." }, { quoted: msg });
     }
+
+    // Commande hidtag
+  else if (command === 'hidetag' || command === 'tag') {
+      await hidetagCommand(sock, msg, from, PREFIX, args);
+      }
   });
 }
 
