@@ -1,17 +1,5 @@
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
 const pino = require('pino');
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('🫧 BSCompany Bot est bien en ligne !');
-});
-
-app.listen(PORT, () => {
-  console.log(`Serveur web prêt sur le port ${PORT}`);
-});
-
 
 // CONFIGURATION DU PRÉFIXE EN EMOJI BULLE
 const PREFIX = "🫧"; 
@@ -44,9 +32,6 @@ async function startBot() {
     }
   });
 
-  
-
-  
   // ÉCOUTE DES MESSAGES
   sock.ev.on('messages.upsert', async ({ messages }) => {
     const msg = messages[0];
@@ -78,13 +63,11 @@ async function startBot() {
       await sock.sendMessage(from, { text: "🏓 Pong ! La bulle répond instantanément 🫧." }, { quoted: msg });
     }
 
-    // Commande hidtag
-  else if (command === 'hidetag' || command === 'tag') {
+    // Commande hidetag
+    else if (command === 'hidetag' || command === 'tag') {
       await hidetagCommand(sock, msg, from, PREFIX, args);
-      }
+    }
   });
 }
 
-
 startBot();
-
