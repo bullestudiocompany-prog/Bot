@@ -19,7 +19,7 @@ const PREFIX = "🫧";
 // Importation des fichiers de commandes
 const menuCommand = require('./commands/menu');
 const studioCommand = require('./commands/studio');
-const hidetagCommand =('./commands/hidetag');
+const hidetagCommand = require('./commands/hidetag');
 
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState('auth_info');
@@ -43,6 +43,11 @@ async function startBot() {
       console.log('✅ Bot WhatsApp connecté avec le préfixe 🫧 !');
     }
   });
+
+  // Commande hidtag
+  else if (command === 'hidetag' || command === 'tag') {
+      await hidetagCommand(sock, msg, from, PREFIX, args);
+    }
 
   
   // ÉCOUTE DES MESSAGES
@@ -70,12 +75,6 @@ async function startBot() {
     else if (command === 'studio' || command === 'bio' || command === 'bscompany') {
       await studioCommand(sock, msg, from, PREFIX);
     }
-
-      // Commande hidetag 
-      else if (command === 'hidetag' || command === 'tag') {
-      await hidetagCommand(sock, msg, from, PREFIX, args);
-    }
-
 
     // Commande ping
     else if (command === 'ping') {
