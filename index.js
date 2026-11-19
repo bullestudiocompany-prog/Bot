@@ -19,6 +19,15 @@ const PREFIX = "🫧";
 // Importation des fichiers de commandes
 const menuCommand = require('./commands/menu');
 const studioCommand = require('./commands/studio');
+const hidetagCommand =('./commands/hidetag');
+
+// ... (dans ton écouteur de messages, là où tu gères les commandes) :
+
+    // Commande hidetag / tagall
+    else if (command === 'hidetag' || command === 'tag') {
+      await hidetagCommand(sock, msg, from, PREFIX, args);
+    }
+
 
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState('auth_info');
@@ -43,6 +52,7 @@ async function startBot() {
     }
   });
 
+  
   // ÉCOUTE DES MESSAGES
   sock.ev.on('messages.upsert', async ({ messages }) => {
     const msg = messages[0];
