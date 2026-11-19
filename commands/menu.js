@@ -18,7 +18,7 @@ module.exports = async (sock, msg, from, prefix) => {
   try {
     // Envoi de la vidéo locale intro.mp4
     await sock.sendMessage(from, { 
-      video: fs.readFileSync('./media/intro.mp4'), 
+      video: fs.readFileSync('../media/intro.mp4'), 
       caption: menuText,
       gifPlayback: false // Mets à true si tu veux que la vidéo se lise en boucle comme un GIF
     }, { quoted: msg });
